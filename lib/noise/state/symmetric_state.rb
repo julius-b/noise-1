@@ -53,6 +53,10 @@ module Noise
 
       # Note that if k is empty, the  EncryptWithAd() call will set ciphertext equal to plaintext.
       def encrypt_and_hash(plaintext)
+        if plaintext == nil || plaintext.bytesize == 0
+          puts 'noise/encrypt_and_hash - ignoring empty'
+          return ''
+        end
         ciphertext = @cipher_state.encrypt_with_ad(@h, plaintext)
         mix_hash(ciphertext)
         ciphertext
@@ -60,6 +64,11 @@ module Noise
 
       # Note that if k is empty, the  DecryptWithAd() call will set plaintext equal to ciphertext.
       def decrypt_and_hash(ciphertext)
+        # puts 'noise/decrypt_and_hash - ciphertext: %s' % ciphertext
+        if ciphertext == nil || ciphertext.bytesize == 0
+          puts 'noise/decrypt_and_hash - ignoring empty'
+          return ''
+        end
         plaintext = @cipher_state.decrypt_with_ad(@h, ciphertext)
         mix_hash(ciphertext)
         plaintext
